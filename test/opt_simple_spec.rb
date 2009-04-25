@@ -36,14 +36,14 @@ describe OptSimple do
 
   it "parameter required" do
     spec = ['-a A']
-    argv = ['-a 12']
+    argv = ['-a', '12']
     param = OptSimple.new(spec, argv)
     param.a.to_i.should == 12
   end
 
   it "get remain" do
     spec = ['-a A']
-    argv = ['-a 12', 'hoge', 'moge']
+    argv = ['-a', '12', 'hoge', 'moge']
     param = OptSimple.new(spec, argv)
     param.remain.should == ['hoge', 'moge']
   end
