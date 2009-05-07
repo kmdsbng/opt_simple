@@ -5,18 +5,18 @@ describe OptSimple do
     spec = ['-a', '-b', '-c']
     argv = ['-c', '-a']
     param = OptSimple.new(spec, argv)
-    param.a.should == true
-    param.b.should_not
-    param.c.should == true
+    param.opt.a.should == true
+    param.opt.b.should_not
+    param.opt.c.should == true
   end
 
   it "shold support long option" do
     spec = ['--a-long-option', '--b-long-option', '--c-long-option']
     argv = ['--c-long-option', '--a-long-option']
     param = OptSimple.new(spec, argv)
-    param.a_long_option.should == true
-    param.b_long_option.should_not
-    param.c_long_option.should == true
+    param.opt.a_long_option.should == true
+    param.opt.b_long_option.should_not
+    param.opt.c_long_option.should == true
   end
 
   it "shold support array type spec" do
@@ -26,19 +26,19 @@ describe OptSimple do
     ]
     argv = ['-c', '--a-long-option']
     param = OptSimple.new(spec, argv)
-    param.a.should == true
-    param.a_long_option.should == true
-    param.b.should_not
-    param.b_long_option.should_not
-    param.c.should == true
-    param.c_long_option.should == true
+    param.opt.a.should == true
+    param.opt.a_long_option.should == true
+    param.opt.b.should_not
+    param.opt.b_long_option.should_not
+    param.opt.c.should == true
+    param.opt.c_long_option.should == true
   end
 
   it "parameter required" do
     spec = ['-a A']
     argv = ['-a', '12']
     param = OptSimple.new(spec, argv)
-    param.a.to_i.should == 12
+    param.opt.a.to_i.should == 12
   end
 
   it "get remain" do
