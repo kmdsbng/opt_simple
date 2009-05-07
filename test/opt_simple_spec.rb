@@ -64,5 +64,13 @@ describe OptSimple do
     exception_happened.should == true
   end
 
+  it "argv should not change" do
+    spec = ['-a A']
+    argv = ['-a', '12', 'hoge', 'moge']
+    argv_org = argv.dup
+    param = OptSimple.new(spec, argv)
+    argv.should == argv_org
+  end
+
 end
 
