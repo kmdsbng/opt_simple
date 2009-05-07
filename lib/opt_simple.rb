@@ -3,7 +3,23 @@ require 'optparse'
 class OptSimple
 
   # option holder
-  class Option
+  class Option < Hash
+    attr_accessor :aliases
+
+    def initialize
+      @aliases = {}
+    end
+
+    # if self has key then return hash value
+    # if aliases has key then return hash value by aliases value
+    def method_missing(name, *args)
+      name = name.to_sym
+      key = self.has_key?(name)     ? name : 
+            @aliases.has_key?(name) ? @aliases[name] :
+            nil
+      return self[key] if key
+      super.method_missing(name, *args)
+    end
   end
 
   attr_reader :remain, :opt
@@ -17,21 +33,15 @@ class OptSimple
 
       # register parser
       parser.on(*s){|v|
-        @opt.instance_variable_set('@' + main_option_name, v)
+        @opt[main_option_name.to_sym] = v
       }
 
-      # define getter
-      @opt.class.class_eval {
-        define_method(main_option_name) {
-          instance_variable_get('@' + main_option_name)
-        }
-      }
+      # define getter place holder
+      @opt[main_option_name.to_sym] = nil
 
       # define getter alias
       option_names.each{|s|
-        @opt.class.class_eval {
-          alias_method s, main_option_name
-        }
+        @opt.aliases[s.to_sym] = main_option_name.to_sym
       }
     }
     @remain = parser.parse(argv)

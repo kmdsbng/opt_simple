@@ -48,5 +48,21 @@ describe OptSimple do
     param.remain.should == ['hoge', 'moge']
   end
 
+  it "should not have method a unless -a option" do
+    spec = ['-a']
+    argv = ['-a']
+    OptSimple.new(spec, argv)
+    spec = ['-b']
+    argv = ['-b']
+    exception_happened = false
+    begin
+      param = OptSimple.new(spec, argv)
+      param.opt.a
+    rescue NoMethodError
+      exception_happened = true
+    end
+    exception_happened.should == true
+  end
+
 end
 
