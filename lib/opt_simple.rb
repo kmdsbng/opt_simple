@@ -14,7 +14,7 @@ class OptSimple
       option_names = s[0..1].select{|o| o =~ /^-/}.map{|o| o.split[0].gsub(/^(\-)+/, '').gsub(/-/, '_')}
       main_option_name = option_names.shift
 
-      # regist parser
+      # register parser
       parser.on(*s){|v|
         instance_variable_set('@' + main_option_name, v)
       }
