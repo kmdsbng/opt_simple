@@ -27,12 +27,12 @@ class OptSimple
   def initialize(spec, argv)
     parser = OptionParser.new
     @opt = Option.new
-    spec.each{|s|
+    spec.each {|s|
       s = [s].flatten
-      main_option_name, *option_names = s[0..1].select{|o| o =~ /^-/}.map{|o| o.split[0].gsub(/^(\-)+/, '').gsub(/-/, '_')}
+      main_option_name, *option_names = s[0..1].select {|o| o =~ /^-/}.map {|o| o.split[0].gsub(/^(\-)+/, '').gsub(/-/, '_')}
 
       # register parser
-      parser.on(*s){|v|
+      parser.on(*s) {|v|
         @opt[main_option_name.to_sym] = v
       }
 
@@ -40,7 +40,7 @@ class OptSimple
       @opt[main_option_name.to_sym] = nil
 
       # define getter alias
-      option_names.each{|s|
+      option_names.each {|s|
         @opt.aliases[s.to_sym] = main_option_name.to_sym
       }
     }
