@@ -17,8 +17,7 @@ class OptSimple
       key = self.has_key?(name)     ? name : 
             @aliases.has_key?(name) ? @aliases[name] :
             nil
-      return self[key] if key
-      super.method_missing(name, *args)
+      key ? self[key] : super.method_missing(name, *args)
     end
   end
 
