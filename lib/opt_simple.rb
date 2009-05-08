@@ -26,8 +26,7 @@ class OptSimple
   def initialize(spec, argv)
     parser = OptionParser.new
     @opt = Option.new
-    spec.each {|s|
-      s = [s].flatten
+    spec.map {|s| [s].flatten}.each {|s|
       main_option_name, *option_aliases = s[0..1].select {|o| o =~ /^-/}.map {|o| o.split[0].gsub(/^(\-)+/, '').gsub(/-/, '_')}
 
       register_parser(parser, s, main_option_name)
