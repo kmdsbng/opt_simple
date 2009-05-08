@@ -10,14 +10,23 @@ class OptSimple
       @aliases = {}
     end
 
+    alias_method :method_missing_original, :method_missing
     # if self has key then return hash value
     # if aliases has key then return hash value by aliases value
     def method_missing(name, *args)
-      name = name.to_sym
-      key = self.has_key?(name)     ? name : 
-            @aliases.has_key?(name) ? @aliases[name] :
-            nil
-      key ? self[key] : super.method_missing(name, *args)
+      key = name.to_sym
+      if (args.empty? && (@aliases.has_key?(key) || self.has_key?(key)))
+        self[name]
+      else
+        method_missing_original(name, *args)
+      end
+    end
+
+    alias_method :get_original, :'[]'
+    def [](key)
+      key = key.to_sym if key.kind_of? String
+      key = @aliases.has_key?(key) ? @aliases[key] : key
+      get_original(key)
     end
   end
 
@@ -29,7 +38,6 @@ class OptSimple
     spec.map {|s| [s].flatten}.each {|s|
       main_option_name, *option_aliases = s[0..1].select {|o| o =~ /^-/}.
                                           map {|o| o.split[0].gsub(/^(\-)+/, '').gsub(/-/, '_')}
-
       register_parser(parser, s, main_option_name)
       define_option(main_option_name, option_aliases)
     }

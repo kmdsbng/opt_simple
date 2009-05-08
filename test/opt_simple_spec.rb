@@ -7,7 +7,11 @@ describe OptSimple do
     param = OptSimple.new(spec, argv)
     param.opt.a.should == true
     param.opt.b.should_not
+    param.opt[:b].should_not
+    param.opt['b'].should_not
     param.opt.c.should == true
+    param.opt[:c].should == true
+    param.opt['c'].should == true
   end
 
   it "shold support long option" do
@@ -32,6 +36,8 @@ describe OptSimple do
     param.opt.b_long_option.should_not
     param.opt.c.should == true
     param.opt.c_long_option.should == true
+    param.opt[:c_long_option].should == true
+    param.opt['c_long_option'].should == true
   end
 
   it "parameter required" do
